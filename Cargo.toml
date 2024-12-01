@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "src/be-core",
+    "src/db/sl_sys",
 ]
 resolver = "2"

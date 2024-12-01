@@ -1,0 +1,8 @@
+[package]
+name = "sl_sys"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+diesel ={ version = "2.2", features = ["mysql", "r2d2", "chrono", "uuid"] }
+dotenvy ={ version = "0.15"}
