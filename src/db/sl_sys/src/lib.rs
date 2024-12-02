@@ -6,6 +6,7 @@ use dotenvy::dotenv;
 type DbPool = diesel::r2d2::Pool<ConnectionManager<MysqlConnection>>;
 pub type DbConn = diesel::r2d2::PooledConnection<ConnectionManager<MysqlConnection>>;
 
+// diesel::r2d2::Pool 자체적으로 동시성 처리함 
 pub static DB_POOL : LazyLock<DbPool> = LazyLock::new(|| {
     dotenv().ok();
     let url = env::var("DATABASE_URL").expect("DATABASE_URL is not in env file");
@@ -18,7 +19,7 @@ pub static DB_POOL : LazyLock<DbPool> = LazyLock::new(|| {
 
 pub fn get_connection() -> Result<DbConn> {
     let pool = &*DB_POOL;
-    pool.get().map_err(|_| Error::new(ErrorKind::Other, "Failed to get connection"))
+    pool.get().map_err(|e| Error::new(ErrorKind::Other, format!("Failed to get connection : {}", e)))
 }
 
 #[cfg(test)]
