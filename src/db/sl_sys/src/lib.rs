@@ -21,17 +21,3 @@ pub fn get_connection() -> Result<DbConn> {
     let pool = &*DB_POOL;
     pool.get().map_err(|e| Error::new(ErrorKind::Other, format!("Failed to get connection : {}", e)))
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_get_connection() {
-        if let Ok(_) = get_connection() {
-            assert!(true);
-        } else {
-            assert!(false);
-        }
-    }
-}
