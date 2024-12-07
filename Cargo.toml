@@ -4,3 +4,14 @@ members = [
     "src/db/sl_sys",
 ]
 resolver = "2"
+
+[workspace.dependencies]
+#internal crates
+#DB
+db_sl_sys = { path = "src/db/sl_sys" }
+
+#external crates
+diesel ={ version = "2.2", features = ["mysql", "r2d2", "chrono", "uuid"] }
+dotenvy ={ version = "0.15"}
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
