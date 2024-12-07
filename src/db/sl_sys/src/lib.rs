@@ -1,7 +1,12 @@
-use std::{env, io::{Error, ErrorKind, Result}, sync::LazyLock};
+use std::{env, sync::LazyLock};
 
+use anyhow::Context;
 use diesel::{r2d2::ConnectionManager, MysqlConnection};
 use dotenvy::dotenv;
+
+pub mod user;
+
+pub mod schema;
 
 type DbPool = diesel::r2d2::Pool<ConnectionManager<MysqlConnection>>;
 pub type DbConn = diesel::r2d2::PooledConnection<ConnectionManager<MysqlConnection>>;
@@ -17,7 +22,7 @@ pub static DB_POOL : LazyLock<DbPool> = LazyLock::new(|| {
         .expect("Failed to create pool")
 });
 
-pub fn get_connection() -> Result<DbConn> {
+pub fn get_connection() -> anyhow::Result<DbConn> {
     let pool = &*DB_POOL;
-    pool.get().map_err(|e| Error::new(ErrorKind::Other, format!("Failed to get connection : {}", e)))
+    pool.get().context("Failed to get connection")
 }
