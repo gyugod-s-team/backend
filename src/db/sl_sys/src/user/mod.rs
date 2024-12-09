@@ -49,6 +49,25 @@ impl User {
 
 #[cfg(test)]
 mod tests {
-    #[allow(unused_imports)]
+    use crate::get_connection;
+
     use super::*;
+
+    #[test]
+    fn test_create() {
+        let mut conn = get_connection().unwrap();
+        let data = UserCreate {
+            user_id: "test".to_string(),
+            nickname: "test".to_string(),
+            email: "test".to_string(),
+            phone_number: "test".to_string(),
+            password_hash: "test".to_string(),
+            last_login_at: None,
+        };
+        let result = User::create(&mut conn, &data).unwrap();
+        assert_eq!(result, 1);
+
+        let result = User::cleanup(&mut conn).unwrap();
+        assert_eq!(result, 1);
+    }
 }
