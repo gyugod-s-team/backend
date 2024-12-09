@@ -38,6 +38,13 @@ impl User {
             .execute(conn)?;
         Ok(result)
     }
+
+    pub fn cleanup(conn: &mut DbConn) -> anyhow::Result<usize> {
+        use crate::schema::user;
+        let result = diesel::delete(user::table)
+            .execute(conn)?;
+        Ok(result)
+    }
 }
 
 #[cfg(test)]
